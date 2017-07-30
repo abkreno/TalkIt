@@ -1,13 +1,28 @@
+import ImageComponent from './app/components/Image';
+import LoggedIn from './app/layouts/LoggedIn';
+import Button from './app/components/Button'
+
+import {StackNavigator} from 'react-navigation';
+import Meteor, { createContainer } from 'react-native-meteor';
+
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-export default class App extends React.Component {
+Meteor.connect('ws://localhost:3000/websocket');//do this only once
+
+class MainScreen extends React.Component {
+  static navigationOptions = {
+    title: 'Welcome',
+  };
   render() {
+    const { navigate } = this.props.navigation;
     return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
+      <View>
+        <Text>Hello, Chat App!</Text>
+        <Button
+          onPress={() => navigate('LoggedIn')}
+          text="Go to Details!"
+        />
       </View>
     );
   }
@@ -20,4 +35,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+});
+
+export default App = StackNavigator({
+  Main: { screen: MainScreen },
+  LoggedIn: { screen: LoggedIn }
 });
